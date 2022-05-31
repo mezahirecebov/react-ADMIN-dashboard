@@ -18,6 +18,7 @@ export const ContextProvider = ({ children }) => {
 
   const [currentMode, setCurrentMode] = useState("Light");
   const [themeSettings, setThemeSettings] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);
@@ -50,6 +51,8 @@ export const ContextProvider = ({ children }) => {
         setMode,
         themeSettings,
         setThemeSettings,
+        isAuthenticated,
+        setIsAuthenticated,
       }}
     >
       {children}
