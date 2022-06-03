@@ -5,12 +5,17 @@ import { useStateContext } from "../contexts/ContextProvider";
 import { LockClosedIcon } from "@heroicons/react/solid";
 import admin from "../data/admin.png";
 import { Link, NavLink } from "react-router-dom";
-import { login } from "../authentication/authActions";
-const Login = () => {
+import { useNavigate } from "react-router-dom"; // v6
+
+import { signup } from "../authentication/authActions";
+
+const SignUp = () => {
+  const navigate = useNavigate();
   const { currentColor, isAuthenticated, setIsAuthenticated } =
     useStateContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -25,8 +30,9 @@ const Login = () => {
     try {
       setError("");
       setLoading(true);
-      await login(email, password);
+      await signup(email, password);
       setIsAuthenticated(true);
+      navigate("/");
     } catch (error) {
       console.log(error);
       setError(error);
@@ -39,7 +45,7 @@ const Login = () => {
         <div>
           <img className="mx-auto h-12 w-auto" src={admin} alt="Workflow" />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            Sign up to your account
           </h2>
           {/* <p className="mt-2 text-center text-sm text-gray-600">
             Or{" "}
@@ -90,32 +96,33 @@ const Login = () => {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <input
+              {/* <input
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
                 className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-              />
-              <label
+              /> */}
+              {/* <label
                 htmlFor="remember-me"
                 className="ml-2 block text-sm text-gray-900"
               >
                 Remember me
-              </label>
+              </label> */}
             </div>
 
-            <div className="text-sm">
+            {/* <div className="text-sm">
               <a
                 href="#"
                 className="font-medium text-green-600 hover:text-green-500"
               >
                 Forgot your password?
               </a>
-            </div>
+            </div> */}
           </div>
 
           <div>
             <button
+              disabled={loading}
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
@@ -125,18 +132,18 @@ const Login = () => {
                   aria-hidden="true"
                 />
               </span>
-              Sign in
+              Sign up
             </button>
           </div>
           <div>
-            Need an account?{" "}
+            Already have an account?{" "}
             <NavLink
               className={({ isActive }) =>
                 isActive ? "text-blue-400" : "text-blue-600"
               }
-              to="/signup"
+              to="/login"
             >
-              Sign Up
+              Log In
             </NavLink>
           </div>
           {error && <p className="text-red-500">Error</p>}
@@ -146,4 +153,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

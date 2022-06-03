@@ -27,6 +27,7 @@ import {
 import { useStateContext } from "./contexts/ContextProvider";
 
 import "./App.css";
+import SignUp from "./pages/SignUp";
 const App = () => {
   const {
     activeMenu,
@@ -36,7 +37,11 @@ const App = () => {
     currentMode,
     isAuthenticated,
     setIsAuthenticated,
+    currentUser,
   } = useStateContext();
+  if (currentUser) {
+    console.log(currentUser);
+  }
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
@@ -46,6 +51,7 @@ const App = () => {
             {/* Login && Sign Up  */}
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
           </Routes>
         </BrowserRouter>
       )}

@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from "react";
-
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../authentication/firebase";
 const StateContext = createContext();
 
 const initialState = {
@@ -19,6 +20,17 @@ export const ContextProvider = ({ children }) => {
   const [currentMode, setCurrentMode] = useState("Light");
   const [themeSettings, setThemeSettings] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+      setLoading(false);
+    });
+
+    return unsubscribe;
+  }, []);
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);
@@ -53,9 +65,11 @@ export const ContextProvider = ({ children }) => {
         setThemeSettings,
         isAuthenticated,
         setIsAuthenticated,
+        currentUser,
+        setCurrentUser,
       }}
     >
-      {children}
+      {!loading && children}
     </StateContext.Provider>
   );
 };
