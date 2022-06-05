@@ -24,9 +24,14 @@ export const ContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-      setIsAuthenticated(true);
-      setLoading(false);
+      if (user) {
+        setCurrentUser(user);
+        setIsAuthenticated(true);
+        setLoading(false);
+      } else {
+        setIsAuthenticated(false);
+        setLoading(false);
+      }
     });
 
     return unsubscribe;
